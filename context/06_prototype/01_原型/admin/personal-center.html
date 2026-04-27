@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>个人中心 - 多店铺积分商城 - 管理员</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Vue3 CDN -->
+  <script src="https://unpkg.com/vue@3.4.0/dist/vue.global.js"></script>
+
+  <!-- 公共样式 -->
+  <link rel="stylesheet" href="../common/common.css"/>
+
+  <!-- 公共脚本 -->
+  <script src="../common/common.js"></script>
+
+  <style>
+    /* 页面特定样式 */
+    .avatar-ring {
+      background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+      padding: 4px;
+    }
+
+    .avatar-inner {
+      background: var(--color-surface-container-lowest);
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.25s ease;
+    }
+
+    .info-item:hover {
+      background: rgba(255, 255, 255, 0.8);
+      transform: translateX(4px);
+    }
+
+    .section-card {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 32px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .section-card:hover {
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .form-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 16px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-on-surface);
+      transition: all 0.25s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.95);
+      border-color: var(--theme-primary);
+      box-shadow: 0 0 0 4px rgba(var(--theme-rgb-primary), 0.15);
+    }
+
+    .form-input::placeholder {
+      color: var(--color-outline);
+    }
+
+    .form-input:disabled {
+      background: rgba(255, 255, 255, 0.4);
+      color: var(--color-outline);
+      cursor: not-allowed;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--color-outline);
+      transition: color 0.2s ease;
+    }
+
+    .password-toggle:hover {
+      color: var(--theme-primary);
+    }
+
+    /* 浮动气泡动画 */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.1));
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      animation: floatBubble linear infinite;
+    }
+
+    .bubble-1 { width: 80px; height: 80px; top: 10%; left: 5%; animation-duration: 18s; opacity: 0.6; }
+    .bubble-2 { width: 120px; height: 120px; top: 60%; left: 80%; animation-duration: 25s; opacity: 0.5; animation-delay: 3s; }
+    .bubble-3 { width: 60px; height: 60px; top: 70%; left: 15%; animation-duration: 20s; opacity: 0.7; animation-delay: 6s; }
+    .bubble-4 { width: 100px; height: 100px; top: 20%; left: 70%; animation-duration: 22s; opacity: 0.55; animation-delay: 9s; }
+    .bubble-5 { width: 50px; height: 50px; top: 45%; left: 45%; animation-duration: 15s; opacity: 0.65; animation-delay: 12s; }
+
+    @keyframes floatBubble {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(20px, -30px) scale(1.05); }
+      50% { transform: translate(-10px, -50px) scale(0.95); }
+      75% { transform: translate(15px, -20px) scale(1.02); }
+    }
+
+    /* 暗色模式 */
+    [data-mode="dark"] .section-card {
+      background: rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-mode="dark"] .info-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-mode="dark"] .info-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-mode="dark"] .form-input {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: var(--color-on-surface);
+    }
+
+    [data-mode="dark"] .form-input:focus {
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    [data-mode="dark"] .sidebar-float {
+      background: rgba(20, 20, 35, 0.5);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-mode="dark"] .topbar-float {
+      background: rgba(25, 25, 45, 0.5);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-mode="dark"] .content-area {
+      background: rgba(25, 25, 50, 0.35);
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+
+    /* 按钮样式 */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+      color: white;
+      box-shadow: 0 8px 32px rgba(var(--theme-rgb-primary), 0.35);
+      border: none;
+      padding: 14px 32px;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(var(--theme-rgb-primary), 0.45);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--theme-primary);
+      color: var(--theme-primary);
+      padding: 12px 28px;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(var(--theme-rgb-primary), 0.08);
+    }
+
+    /* 邀请码样式 */
+    .invite-code-box {
+      background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+      border-radius: 20px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .invite-code-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .invite-code-text {
+      font-family: 'Manrope', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: white;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .copy-btn {
+      background: var(--theme-primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .copy-btn:hover {
+      filter: brightness(1.1);
+      transform: scale(1.05);
+    }
+
+    .copy-btn:active {
+      transform: scale(0.98);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-valid {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10B981;
+    }
+
+    .status-invalid {
+      background: rgba(239, 68, 68, 0.2);
+      color: #EF4444;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .status-valid .status-dot {
+      background: #10B981;
+      animation: pulse-dot 2s infinite;
+    }
+
+    .status-invalid .status-dot {
+      background: #EF4444;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body class="bg-[#faf8ff] dark:bg-[#121218] min-h-screen flex overflow-hidden relative font-body antialiased">
+  <div id="app">
+    <!-- Atmospheric Background -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+      <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-blue-200 dark:bg-slate-700 blur-[120px] opacity-40 mix-blend-multiply"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-200 dark:bg-slate-800 blur-[150px] opacity-30 mix-blend-multiply"></div>
+      <div class="absolute top-[30%] right-[20%] w-[30%] h-[30%] rounded-full bg-orange-200 dark:bg-slate-900 blur-[100px] opacity-20 mix-blend-multiply"></div>
+      <div class="bubble bubble-1"></div>
+      <div class="bubble bubble-2"></div>
+      <div class="bubble bubble-3"></div>
+      <div class="bubble bubble-4"></div>
+      <div class="bubble bubble-5"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar-float flex flex-col fixed left-0 top-0 z-40">
+      <div class="p-6 border-b border-white/30">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#004ac6] to-[#712ae2] flex items-center justify-center text-white shadow-lg">
+            <span class="material-symbols-outlined fill-icon text-2xl">generating_tokens</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-lg font-bold text-[#191b23] dark:text-white leading-tight">ShopAdmin</span>
+            <span class="text-xs text-[#737686] dark:text-[#a0a4b8] uppercase tracking-wider font-semibold">系统管理</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="flex-1 px-4 py-6 flex flex-col gap-2 overflow-y-auto custom-scrollbar">
+        <div v-for="(item, index) in navItems" :key="index"
+             :class="['nav-item', { active: item.active }]"
+             @click="setActive(index)">
+          <span class="material-symbols-outlined nav-item-icon" :class="{ 'fill-icon': item.active }">{{ item.icon }}</span>
+          <span>{{ item.name }}</span>
+        </div>
+      </nav>
+
+      <div class="px-4 mt-auto border-t border-white/30 pt-4">
+        <div class="nav-item text-[#737686] hover:text-[#EF4444] hover:bg-red-50/50 dark:hover:bg-red-900/20">
+          <span class="material-symbols-outlined nav-item-icon">logout</span>
+          <span>退出登录</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex flex-col relative z-10 ml-72" style="width: calc(100vw - 288px); height: 100vh;">
+      <!-- Top Navigation Bar -->
+      <header class="topbar-float flex items-center justify-between px-6" style="width: calc(100% - 24px);">
+        <div class="flex items-center gap-4">
+          <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#004ac6] to-[#2563eb] uppercase tracking-tight">个人中心</span>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#737686] text-lg">search</span>
+            <input
+              v-model="searchQuery"
+              class="bg-white/40 border border-white/50 rounded-full py-2.5 pl-12 pr-6 text-sm text-[#191b23] placeholder-[#737686] focus:outline-none focus:ring-2 focus:ring-[#004ac6]/20 focus:bg-white/60 focus:border-white/70 transition-all w-48"
+              placeholder="搜索..."
+              type="text"
+            />
+          </div>
+
+          <div class="flex items-center gap-2 bg-white/50 p-1.5 rounded-2xl">
+            <button @click="showThemePanel = !showThemePanel" class="p-2 rounded-xl hover:bg-white transition-all text-[#737686] hover:text-[#004ac6]">
+              <span class="material-symbols-outlined">palette</span>
+            </button>
+
+            <button class="p-2 rounded-xl hover:bg-white transition-all text-[#737686] hover:text-[#004ac6] relative">
+              <span class="material-symbols-outlined">notifications</span>
+              <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-[#EF4444] rounded-full"></span>
+            </button>
+
+            <button class="p-1.5 rounded-xl hover:bg-white transition-all text-[#737686] hover:text-[#004ac6]">
+              <span class="material-symbols-outlined">account_circle</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <main class="content-area overflow-y-auto p-6" style="flex: 1;">
+        <div class="max-w-5xl mx-auto">
+          <!-- Page Header -->
+          <div class="mb-8">
+            <h1 class="font-headline-md text-[#191b23] dark:text-white mb-2">个人中心</h1>
+            <p class="font-body-md text-sm text-[#737686] dark:text-white/60">管理您的个人信息、账户安全和邀请码</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column: Avatar & Account Info -->
+            <div class="lg:col-span-1 space-y-6">
+              <!-- Avatar Card -->
+              <div class="section-card text-center">
+                <div class="avatar-ring rounded-full w-32 h-32 mx-auto mb-4">
+                  <div class="avatar-inner rounded-full w-full h-full flex items-center justify-center overflow-hidden">
+                    <img v-if="user.avatar" :src="user.avatar" alt="用户头像" class="w-full h-full object-cover"/>
+                    <span v-else class="material-symbols-outlined text-5xl text-[#737686]">account_circle</span>
+                  </div>
+                </div>
+                <h2 class="font-headline-sm text-[#191b23] dark:text-white mb-1">{{ user.nickname || user.username }}</h2>
+                <p class="font-body-md text-sm text-[#737686] dark:text-white/60 mb-4">&#64;{{ user.username }}</p>
+                <label class="btn-secondary inline-flex items-center gap-2 cursor-pointer">
+                  <span class="material-symbols-outlined text-lg">camera_alt</span>
+                  <span>更换头像</span>
+                  <input type="file" accept="image/*" class="hidden" @change="handleAvatarChange"/>
+                </label>
+              </div>
+
+              <!-- Account Info Card -->
+              <div class="section-card">
+                <h3 class="font-headline-sm text-[#191b23] dark:text-white mb-4 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#004ac6]">info</span>
+                  账户信息
+                </h3>
+                <div class="space-y-3">
+                  <div class="info-item">
+                    <span class="material-symbols-outlined text-[#737686] mr-3">badge</span>
+                    <div class="flex-1">
+                      <p class="font-label-md text-[#737686] text-xs mb-0.5">角色</p>
+                      <p class="font-body-md text-[#191b23] dark:text-white font-medium">管理员</p>
+                    </div>
+                  </div>
+                  <div class="info-item">
+                    <span class="material-symbols-outlined text-[#737686] mr-3">calendar_today</span>
+                    <div class="flex-1">
+                      <p class="font-label-md text-[#737686] text-xs mb-0.5">加入日期</p>
+                      <p class="font-body-md text-[#191b23] dark:text-white font-medium">{{ user.joinDate }}</p>
+                    </div>
+                  </div>
+                  <div class="info-item">
+                    <span class="material-symbols-outlined text-[#737686] mr-3"> vpn_key</span>
+                    <div class="flex-1">
+                      <p class="font-label-md text-[#737686] text-xs mb-0.5">邀请码类型</p>
+                      <p class="font-body-md text-[#191b23] dark:text-white font-medium">邀请店铺用户</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Edit Profile, Change Password, Invite Code -->
+            <div class="lg:col-span-2 space-y-6">
+              <!-- Edit Profile Card -->
+              <div class="section-card">
+                <h3 class="font-headline-sm text-[#191b23] dark:text-white mb-6 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#004ac6]">edit</span>
+                  编辑资料
+                </h3>
+                <form @submit.prevent="saveProfile">
+                  <div class="space-y-5">
+                    <div>
+                      <label class="font-label-md text-[#737686] block mb-2">用户名</label>
+                      <input
+                        type="text"
+                        class="form-input"
+                        v-model="editForm.username"
+                        disabled
+                        placeholder="用户名不可修改"
+                      />
+                    </div>
+                    <div>
+                      <label class="font-label-md text-[#737686] block mb-2">昵称</label>
+                      <input
+                        type="text"
+                        class="form-input"
+                        v-model="editForm.nickname"
+                        :placeholder="'请输入昵称，当前：' + user.nickname"
+                      />
+                    </div>
+                  </div>
+                  <div class="mt-6 flex gap-3">
+                    <button type="submit" class="btn-primary">保存修改</button>
+                    <button type="button" class="btn-secondary" @click="resetForm">重置</button>
+                  </div>
+                </form>
+              </div>
+
+              
+
+              <!-- Invite Code Card (Admin Only) -->
+              <div class="section-card">
+                <h3 class="font-headline-sm text-[#191b23] dark:text-white mb-6 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#004ac6]">qr_code</span>
+                  邀请码管理
+                </h3>
+                <p class="font-body-md text-sm text-[#737686] dark:text-white/60 mb-6">
+                  生成邀请码用于邀请店铺用户注册，被邀请的店铺用户需要审核后才能登录。
+                </p>
+
+                <!-- Current Invite Code Display -->
+                <div v-if="inviteCode.code">
+                  <div class="invite-code-box mb-4">
+                    <div class="flex items-center justify-between relative z-10">
+                      <div>
+                        <p class="font-label-md text-white/70 mb-1">当前邀请码</p>
+                        <p class="invite-code-text">{{ inviteCode.code }}</p>
+                      </div>
+                      <div class="text-right">
+                        <div :class="['status-badge', inviteCode.expired === 'VALID' ? 'status-valid' : 'status-invalid']">
+                          <span class="status-dot"></span>
+                          <span>{{ inviteCode.expired === 'VALID' ? '有效' : '已失效' }}</span>
+                        </div>
+                        <p class="font-label-md text-white/60 text-xs mt-2">
+                          {{ inviteCode.expired === 'VALID' ? '可正常使用' : '已重新生成' }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex gap-3">
+                  <button @click="copyInviteCode" class="copy-btn flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">content_copy</span>
+                    <span>复制邀请码</span>
+                  </button>
+                  <button @click="regenerateInviteCode" class="copy-btn flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">refresh</span>
+                    <span>重新生成</span>
+                  </button>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button
+      @click="showThemePanel = !showThemePanel"
+      class="theme-btn group"
+    >
+      <span class="material-symbols-outlined text-2xl group-hover:rotate-45 transition-transform duration-500">dark_mode</span>
+    </button>
+
+    <!-- Theme Selection Panel -->
+    <transition name="fade">
+      <div v-if="showThemePanel" class="theme-panel animate-slide-up">
+        <div class="mb-6">
+          <p class="font-label-md text-[#737686] mb-3">主题颜色</p>
+          <div class="flex gap-3">
+            <button
+              @click="setTheme('')"
+              class="w-10 h-10 rounded-full bg-[#004ac6] border-2 border-white shadow-md hover:scale-110 transition-all"
+              title="科技蓝"
+            ></button>
+            <button
+              @click="setTheme('fresh-green')"
+              class="w-10 h-10 rounded-full bg-[#10B981] border-2 border-white shadow-md hover:scale-110 transition-all"
+              title="清新绿"
+            ></button>
+            <button
+              @click="setTheme('romantic-purple')"
+              class="w-10 h-10 rounded-full bg-[#8B5CF6] border-2 border-white shadow-md hover:scale-110 transition-all"
+              title="浪漫紫"
+            ></button>
+            <button
+              @click="setTheme('vibrant-pink')"
+              class="w-10 h-10 rounded-full bg-[#EC4899] border-2 border-white shadow-md hover:scale-110 transition-all"
+              title="活力粉"
+            ></button>
+            <button
+              @click="setTheme('pure-white')"
+              class="w-10 h-10 rounded-full bg-[#1F2937] border-2 border-white shadow-md hover:scale-110 transition-all"
+              title="纯净白"
+            ></button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span class="font-body-md text-[#737686]">暗色模式</span>
+          <button
+            @click="toggleDarkMode"
+            :class="[
+              'w-12 h-6 rounded-full relative transition-all duration-200',
+              isDark ? 'bg-[#004ac6]' : 'bg-[#e7e7f3]'
+            ]"
+          >
+            <span
+              :class="[
+                'absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all duration-200',
+                isDark ? 'left-7' : 'left-1'
+              ]"
+            ></span>
+          </button>
+        </div>
+      </div>
+    </transition>
+  </div>
+
+  <script>
+    const { createApp, ref, reactive } = Vue;
+
+    const app = createApp({
+      setup() {
+        const navItems = ref([
+          { name: 'Dashboard', icon: 'dashboard', active: false },
+          { name: '店铺管理', icon: 'storefront', active: false },
+          { name: '用户管理', icon: 'group', active: false },
+          { name: '订单管理', icon: 'receipt_long', active: false },
+          { name: '消息通知', icon: 'notifications', active: false },
+          { name: '个人中心', icon: 'person', active: true }
+        ]);
+
+        const searchQuery = ref('');
+        const showThemePanel = ref(false);
+        const isDark = ref(false);
+
+        // 用户信息
+        const user = reactive({
+          username: 'admin',
+          nickname: '超级管理员',
+          avatar: '',
+          joinDate: '2024-01-01'
+        });
+
+        // 编辑表单
+        const editForm = reactive({
+          username: user.username,
+          nickname: user.nickname
+        });
+
+        // 邀请码
+        const inviteCode = reactive({
+          code: 'ADM2026ABCD',
+          expired: 'VALID',
+          createdAt: '2026-04-20 10:30:00'
+        });
+
+        const setActive = (index) => {
+          navItems.value.forEach((item, i) => {
+            item.active = i === index;
+          });
+        };
+
+        const setTheme = (theme) => {
+          if (theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+          } else {
+            document.documentElement.removeAttribute('data-theme');
+          }
+        };
+
+        const toggleDarkMode = () => {
+          isDark.value = !isDark.value;
+          if (isDark.value) {
+            document.documentElement.setAttribute('data-mode', 'dark');
+          } else {
+            document.documentElement.removeAttribute('data-mode');
+          }
+        };
+
+        const saveProfile = () => {
+          user.nickname = editForm.nickname;
+          if (window.Utils) {
+            window.Utils.showToast('个人信息已保存');
+          }
+        };
+
+        const resetForm = () => {
+          editForm.nickname = user.nickname;
+        };
+
+        const handleAvatarChange = (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            if (file.size > 2 * 1024 * 1024) {
+              if (window.Utils) window.Utils.showToast('图片大小不能超过2MB');
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              user.avatar = event.target.result;
+              if (window.Utils) window.Utils.showToast('头像已更新');
+            };
+            reader.readAsDataURL(file);
+          }
+        };
+
+        const copyInviteCode = async () => {
+          if (window.Utils) {
+            await window.Utils.copyToClipboard(inviteCode.code);
+            window.Utils.showToast('邀请码已复制到剪贴板');
+          }
+        };
+
+        const regenerateInviteCode = () => {
+          inviteCode.code = 'ADM' + Math.random().toString(36).substr(2, 8).toUpperCase();
+          if (window.Utils) {
+            window.Utils.showToast('邀请码已重新生成');
+          }
+        };
+
+        return {
+          navItems,
+          searchQuery,
+          showThemePanel,
+          isDark,
+          user,
+          editForm,
+          inviteCode,
+          setActive,
+          setTheme,
+          toggleDarkMode,
+          saveProfile,
+          resetForm,
+          handleAvatarChange,
+          copyInviteCode,
+          regenerateInviteCode
+        };
+      }
+    });
+
+    app.mount('#app');
+  </script>
+</body>
+</html>
