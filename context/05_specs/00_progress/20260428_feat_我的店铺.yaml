@@ -1,0 +1,29 @@
+feature_id: "20260428_feat_我的店铺"
+base_on: null
+change_group: null
+feature_name: "我的店铺"
+creator: "danshihao"
+created_at: "2026-04-28T08:00:00Z"
+updated_at: "2026-04-28T08:00:00Z"
+stages:
+  specs:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    check_owner: null
+  interface:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    check_owner: null
+  dev_plan:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    check_owner: null
+  dev_exec:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    check_owner: null
+rollback_history: []
