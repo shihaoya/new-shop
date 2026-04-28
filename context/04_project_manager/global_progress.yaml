@@ -1,0 +1,82 @@
+version: "1.0"
+project_name: "多店铺积分商城系统"
+phases:
+  prd:
+    status: "completed"
+    started_at: "2026-04-27T00:00:00Z"
+    completed_at: "2026-04-28T00:00:00Z"
+    check_owner: null
+  architecture:
+    status: "completed"
+    started_at: "2026-04-28T00:00:00Z"
+    completed_at: "2026-04-28T00:00:00Z"
+    check_owner: null
+  features:
+    status: "in_progress"
+    started_at: "2026-04-28T00:00:00Z"
+    completed_at: null
+    check_owner: null
+
+features:
+  - id: "20260428_feat_个人中心"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_商品分类管理"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_商品兑换"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_商品管理"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_店铺用户管理"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_订单管理"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_消息通知"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_我的店铺"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_文件存储基础设施"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_认证与权限"
+    current_stage: "specs"
+    stage_status: "in_progress"
+    children: []
+  - id: "20260428_feat_管理员个人中心"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_管理员店铺管理"
+    current_stage: "specs"
+    stage_status: "pending"
+    children: []
+  - id: "20260428_feat_管理员用户管理"
+    current_stage: "interface"
+    stage_status: "pending"
+    children: []
+
+feature_stats:
+  total: 13
+  completed: 0
+  in_progress: 2
+  blocked: 0
+  pending: 11
+
+created_at: "2026-04-28T00:00:00Z"
+updated_at: "2026-04-28T00:00:00Z"

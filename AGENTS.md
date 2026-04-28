@@ -34,6 +34,7 @@ ai-shop/
 |------|------|
 | `code/frontend/AGENTS.md` | 前端技术栈、开发命令、入口点、UI 规范 |
 | `code/backend/AGENTS.md` | 后端技术栈、开发命令、入口点、配置 |
+| `AGETNS_DATABASE_API_RULE.md` | 全局 API 设计规范（RESTful、响应格式、错误码） |
 | `context/01_需求澄清/00_业务需求.md` | 核心业务逻辑、角色、数据隔离规则（SSOT） |
 | `context/02_prd/PRD.md` | 产品需求文档 |
 | `UI/00_UI页面提示词.md` | 前端页面风格指导（液态玻璃） |

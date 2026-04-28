@@ -86,16 +86,24 @@ src/
 
 ```json
 {
-  "code": "",
-  "message": "",
+  "success": true,
+  "code": "200",
+  "message": "success",
   "data": {}
 }
 ```
 
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| success | boolean | 请求是否成功，true=成功，false=失败 |
+| code | string | 业务状态码，"200" 表示成功，非 200 为错误 |
+| message | string | 状态描述，成功时为 "success" |
+| data | object/array | 响应数据，失败时为 null |
+
 - HTTP 状态码始终 200/201
-- 业务错误在 `code` 和 `message` 中体现，不修改 HTTP 状态码
+- 业务错误在 `success=false` 和 `code`/`message` 中体现，不修改 HTTP 状态码
+- `success` 字段用于快速判断请求是否成功
 - `code` 通常为 "200" 表示成功，或自定义错误码
-- `message` 用于错误原因提示
 
 ## 已知限制
 
