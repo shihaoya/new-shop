@@ -1,10 +1,27 @@
-feature_id: 20260428_feat_系统基础设施
-feature_name: 系统基础设施
-stage: specs
-creator: daydream
-created_at: 2026-04-28
-base_on: 无
-change_group: 无
-reviewer: ""
-checkpoints: []
-notes: ""
+feature_id: "20260428_feat_系统基础设施"
+base_on: null
+change_group: null
+feature_name: "系统基础设施"
+creator: "daydream"
+created_at: "2026-04-28T00:00:00Z"
+updated_at: "2026-04-28T00:00:00Z"
+stages:
+  specs:
+    status: "completed"
+    started_at: "2026-04-28T00:00:00Z"
+    completed_at: "2026-04-28T00:00:00Z"
+    check_owner: "daydream"
+  interface:
+    status: "in_progress"
+    started_at: "2026-04-28T00:00:00Z"
+  dev_plan:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    check_owner: null
+  dev_exec:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    check_owner: null
+rollback_history: []

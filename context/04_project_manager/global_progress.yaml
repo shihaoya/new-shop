@@ -1,0 +1,35 @@
+version: "1.0"
+project_name: "积分商城"
+# 当前阶段：通过遍历 phases 确定（第一个 status 不在 ["completed", "skipped", "blocked"] 中的阶段）
+phases:
+  prd:
+    status: "completed"
+    started_at: "2026-04-28T14:16:00Z"
+    completed_at: "2026-04-28T14:16:00Z"
+    check_owner: null
+  architecture:
+    status: "completed"
+    started_at: "2026-04-28T14:31:00Z"
+    completed_at: "2026-04-28T14:35:00Z"
+    check_owner: Sisyphus
+  features:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    check_owner: null
+
+# Feature 树状聚合列表（从 05_specs/00_progress/ 自动同步）
+# 每次执行 /pm status 或 /pm check 时重新构建此树
+# 以 base_on 为 null 的 Feature 作为顶层节点，其余按 base_on 挂到对应父节点的 children 下
+features: []
+
+# 聚合统计（自动计算）
+feature_stats:
+  total: 0
+  completed: 0
+  in_progress: 0
+  blocked: 0
+  pending: 0
+
+created_at: "2026-04-28T14:16:00Z"
+updated_at: "2026-04-28T14:35:00Z"

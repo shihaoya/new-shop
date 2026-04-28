@@ -1,5 +1,49 @@
 server:
   port: 18890
+
 spring:
   application:
     name: ai-shop
+  
+  # 数据源配置（请根据实际环境修改）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ai_shop?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+
+# MyBatis 配置
+mybatis:
+  # Mapper XML 文件位置
+  mapper-locations: classpath:mapper/*.xml
+  # 实体类包路径
+  type-aliases-package: com.linkman.aishop.entity
+  configuration:
+    # 开启驼峰命名转换（snake_case -> camelCase）
+    map-underscore-to-camel-case: true
+    # 打印 SQL 日志（开发环境）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# JWT 配置
+jwt:
+  # JWT 密钥（生产环境请使用环境变量或配置中心）
+  secret: ai-shop-jwt-secret-key-2026-production-ready
+  # Token 过期时间（单位：秒），默认 7 天
+  expiration: 604800
+  # Token 前缀
+  token-prefix: Bearer 
+  # Token 请求头名称
+  header: Authorization
+
+# 文件上传配置
+spring.servlet.multipart:
+  max-file-size: 10MB
+  max-request-size: 50MB
+
+# 日志配置
+logging:
+  level:
+    com.linkman.aishop: DEBUG
+    org.springframework.web: INFO
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n'
